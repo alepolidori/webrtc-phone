@@ -1,0 +1,27 @@
+{
+  "name": "webrtc-phone",
+  "version": "0.0.1",
+  "description": "WebRTC Cloud Phone",
+  "main": "index.js",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "5.10.0",
+    "bootstrap": "4.3.1",
+    "jquery": "^3.3.1",
+    "sip.js": "0.15.3",
+    "webrtc-adapter": "7.2.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alepolidori/webrtc-phone.git"
+  },
+  "author": "Alessandro Polidori",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alepolidori/webrtc-phone/issues"
+  },
+  "homepage": "https://github.com/alepolidori/webrtc-phone#readme"
+}

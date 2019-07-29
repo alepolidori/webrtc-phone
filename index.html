@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet"
+      href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T">
+    <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+
+    <title>WebRTC Phone Demo</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-success text-white">
+      <h4><a class="navbar-brand" href="#">
+        <img src="statics/webrtc-logo.png" width="200px" alt="">
+        <a class="text-white align-middle" href="https://twitter.com/ale_polidori">@ale_polidori</a>
+      </a></h4>
+      <h4><a href="#" id="home-btn" class="text-white">Home</a></h4>
+      <h4>
+        <label id="extenid-label" class="mr-3"></label>
+        <a href="#" id="settings-btn"><i class="fas fa-cog text-white"></i></a>
+      </h4>
+    </nav>
+      
+
+    <div class="container mt-3">
+      
+      <div id="home-page">
+
+        <div class="row justify-content-center">
+          <div class="col-sm-10 col-lg-8 input-group input-group-lg shadow p-0 mb-5 bg-white rounded">
+            <input type="text" class="form-control" id="destination" placeholder="Insert the number to call" value="" disabled>
+            <div class="input-group-append" id="button-addon4">
+              <button type="button" class="btn btn-primary" id="videocall-btn" disabled><i class="fas fa-video"></i></button>
+              <button type="button" class="btn btn-primary" id="audiocall-btn" disabled><i class="fas fa-phone-alt"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-sm-10 col-lg-8 input-group input-group-lg shadow p-0 mb-5 bg-white rounded">
+            <div class="card w-100">
+              <div class="card-header bg-primary text-white">
+                Users
+              </div>
+              <ul class="overflow-auto list-group list-group-flush" id="users-list" style="height: 20em">
+                <label id="no-users-label" class="list-group-item list-group-item-action text-black-50" disabled>Not connected !</label>
+                <!-- <button class="list-group-item list-group-item-action text-black-50" disabled><i class="fas fa-circle  mr-3"></i>201 - John</button>
+                <button class="list-group-item list-group-item-action" data-exten="201"><i class="fas fa-circle text-success mr-3"></i>201 - John</button>
+                <button class="list-group-item list-group-item-action text-black-50" disabled><i class="fas fa-circle  mr-3"></i>201 - John</button>
+                <button class="list-group-item list-group-item-action"><i class="fas fa-circle text-success mr-3"></i>201 - John</button>
+                <button class="list-group-item list-group-item-action text-black-50" disabled><i class="fas fa-circle  mr-3"></i>201 - John</button>
+                <button class="list-group-item list-group-item-action" data-exten="201"><i class="fas fa-circle text-success mr-3"></i>201 - John</button>
+                <button class="list-group-item list-group-item-action text-black-50" disabled><i class="fas fa-circle  mr-3"></i>201 - John</button>
+                <button class="list-group-item list-group-item-action"><i class="fas fa-circle text-success mr-3"></i>201 - John</button> -->
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+
+      <div class="toast d-none" id="incall-toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false"
+        style="position: absolute; top: 10px; right: 10px; z-index: 1000; width: 300px"
+        data-animation=false>
+        <div class="toast-header">
+          <strong class="mr-auto" id="toast-title">Incoming call from 201</strong>
+        </div>
+        <div class="toast-body">
+          <div class="row">
+            <div class="col-6">
+              <button class="w-100 btn btn-primary" id="answer-btn">Answer</button>
+            </div>
+            <div class="col-6">
+              <button class="w-100 btn btn-danger hangup-btn">Hangup</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+
+
+
+
+      
+      
+      <div id="call-page" class="d-none">
+        <div class="row justify-content-center">
+          <div class="col-md-8 align-middle">
+            <div class="card" id="call-video-box">
+              <div class="card-header" id="call-status"></div>
+              <div class="card-body p-0">
+                <div class="card border-0">
+                  <div class="media" id="remote-video-box">
+                    <video autoplay id="remote-video" class="embed-responsive"></video>
+                    <audio autoplay id="remote-audio"></audio>
+                  </div>
+                  <div class="card-img-overlay">
+                    <video autoplay muted id="local-video" class="w-25 embed-responsive float-right border"></video>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card-footer text-center">
+                <button class="btn btn-danger hangup-btn"><i class="fas fa-phone-slash"></i></button>
+                <button class="btn btn-secondary" id="start-fullscreen-btn"><i class="fas fa-expand"></i></button>
+                <button class="btn btn-secondary d-none" id="exit-fullscreen-btn"><i class="fas fa-compress"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      
+      <div class="row justify-content-center d-none" id="settings-page">
+        <div class="col-lg-8">
+          <div class="card">
+            <div class="card-header">
+              Settings
+            </div>
+            <div class="card-body">
+              <form>
+                <div class="form-group">
+                  <label for="server">Server</label>
+                  <input type="text" id="server" class="form-control" value="" placeholder="Enter server address" required>
+                </div>
+                <div class="form-group">
+                  <label for="exten">Extension</label>
+                  <input type="text" id="exten" class="form-control" value="" placeholder="Enter the extension identifier" required>
+                </div>
+                <div class="form-group">
+                  <label for="name">Name</label>
+                  <input type="text" id="name" class="form-control" value="" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" id="password" class="form-control" value="" placeholder="Enter the extension password" required>
+                </div>
+                <div class="form-group form-check">
+                  <input type="checkbox" class="form-check-input" id="auto-connection" value="auto-connection" disabled>
+                  <label class="form-check-label" for="auto-connection">Automatic connection on refresh</label>
+                </div>
+                <div class="form-group form-check">
+                  <input type="checkbox" class="form-check-input" id="store-data" value="store-data">
+                  <label class="form-check-label" for="store-data">Remember data on login</label>
+                </div>
+                <button type="button" class="btn btn-primary" id="login-btn">Login</button>
+                <button type="button" class="btn btn-danger" id="logout-btn">Logout</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <script src="node_modules/jquery/dist/jquery.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> -->
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"></script>
+    <script src="node_modules/sip.js/dist/sip-0.15.3.min.js"></script>
+    <script src="node_modules/webrtc-adapter/out/adapter.js"></script>
+    <script src="lib/janus-0.4.4.js"></script>
+    <script src="src/js/app.js"></script>
+    <script src="src/js/sipjs-webrtc-phone.js"></script>
+    <script src="src/js/sipml5-webrtc-phone.js"></script>
+    <script src="src/js/janus-webrtc-phone.js"></script>
+    <script src="src/js/settings-page.js"></script>
+    <script src="src/js/home-page.js"></script>
+  </body>
+</html>

@@ -1,2 +1,1 @@
-# webrtc-phone
-WebRTC Cloud Phone
+# WebRTC Cloud Phone
