@@ -6,7 +6,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.10.0",
     "bootstrap": "4.3.1",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "sip.js": "0.15.3",
     "webrtc-adapter": "7.2.8"
   },
